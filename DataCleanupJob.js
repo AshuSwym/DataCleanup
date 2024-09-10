@@ -1,6 +1,7 @@
 const { connectToMongoDB } = require("./dal.js");
 const { getSwymUserJourneyMeta } = require("./Models/index.js");
 const { TTL, INTERVAL } = require("./config.js");
+const fs = require('fs');
 
 const endDate = Date.now() - TTL;
 
@@ -10,6 +11,7 @@ const driver = async () => {
 
 	let startDate = await getTheFirstDate(SwymUserJourneyMeta);
 	let noOfRetries = 0;
+	let count = 687952;
 	const endDateInString = new Date(endDate).toString();
 
 	console.log(`End date : ${endDateInString}`);
@@ -27,8 +29,19 @@ const driver = async () => {
 					},
 				},
 			]);
+			count = count + data;
 			console.log(data);
 			console.log(deleteOperation);
+
+			const lines = `Deleted ${data} for Date : ${startDateInString} Total Deleted : ${count}\n`;
+			fs.appendFile("deletion.log", lines, (err) => {
+				if (err) {
+					console.error(
+						`Error writing to file`,
+						err
+					);
+				}
+			});
 			startDate = startDate + INTERVAL;
 		} catch (error) {
 			console.log(error);
@@ -36,6 +49,7 @@ const driver = async () => {
 				await delay(5000);
 				await connectToMongoDB();
 			} else return;
+			noOfRetries++;
 		}
 	}
 };
