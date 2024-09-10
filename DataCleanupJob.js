@@ -11,7 +11,7 @@ const driver = async () => {
 
 	let startDate = await getTheFirstDate(SwymUserJourneyMeta);
 	let noOfRetries = 0;
-	let count = 687952;
+	let count = 0;
 	const endDateInString = new Date(endDate).toString();
 
 	console.log(`End date : ${endDateInString}`);
