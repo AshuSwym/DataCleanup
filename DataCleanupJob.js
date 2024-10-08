@@ -8,7 +8,7 @@ const logger = require("./utils/logger.js");
 const { createMongoConnections } = require("./utils/connectToDB.js");
 const { formatNumber } = require("./utils/index.js");
 
-const tiers = ["v3starter", "v3pro", "v3premium", "v3enterprise"];
+const tiers = ["v3free", "v3starter", "v3pro", "v3premium", "v3enterprise"];
 
 const driver = async () => {
 	await createMongoConnections();
